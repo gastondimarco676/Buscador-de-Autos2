@@ -1,5 +1,9 @@
 //Variables
 const resultado = document.querySelector('#resultado')
+const max = new Date().getFullYear()
+const min = max - 10
+const maximin = ` ${max} - ${min}`
+console.log(maximin)
 const marca = document.querySelector('#marca')
 const modelo = document.querySelector('#modelo')
 const year = document.querySelector('#year')
@@ -11,7 +15,9 @@ const color = document.querySelector('#color')
 
 //Eventos
 document.addEventListener('DOMContentLoaded', ()=>
-mostrarAutos())
+mostrarAutos(),
+SelectAños()
+)
 
 function mostrarAutos(){
 autos.forEach(auto=>{
@@ -20,4 +26,13 @@ autos.forEach(auto=>{
     autoHTML.textContent = `${marca} ${modelo} - ${puertas} puertas - color ${color} - T. ${transmision } - Precio: $${precio}`
     resultado.appendChild(autoHTML)
 })
+}
+function SelectAños(){
+    for(let i=max;i>=min; i--){
+        const opcion = document.createElement('option')
+        opcion.value=i
+        opcion.textContent=i
+        year.appendChild(opcion)
+        //console.log(opcion)
+    }
 }
