@@ -6,13 +6,25 @@ const max = new Date().getFullYear()
 const min = max - 10
 //los distintos select
 const marca = document.querySelector('#marca')
-//const modelo = document.querySelector('#modelo')
+const modelo = document.querySelector('#modelo')
 const year = document.querySelector('#year')
 const minimo = document.querySelector('#minimo')
 const maximo = document.querySelector('#maximo')
 const puertas = document.querySelector('#puertas')
 const transmision = document.querySelector('#transmision')
 const color = document.querySelector('#color')
+
+//creando objeto de busqueda
+const datosBusqueda = {
+    marca: '',
+    modelo: '',
+    year: '',
+    minimo: '',
+    maximo: '',
+    puertas: '',
+    transmision: '',
+    color: ''
+}
 
 //Eventos
 document.addEventListener('DOMContentLoaded', () =>
@@ -21,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () =>
     marca.addEventListener('change', e => {
         datosBusqueda.marca = e.target.value
         console.log(datosBusqueda)
+        filtrarAutos()
     }),
     /*modelo.addEventListener('change', e => {
         datosBusqueda.modelo = e.target.value
@@ -53,10 +66,11 @@ document.addEventListener('DOMContentLoaded', () =>
 )
 
 function mostrarAutos() {
+
     autos.forEach(auto => {
         const autoHTML = document.createElement('p')
         const { marca, modelo, year, precio, puertas, transmision, color } = auto
-        autoHTML.textContent = `${marca} ${modelo} - ${puertas} puertas - color ${color} - T. ${transmision} - Precio: $${precio}`
+        autoHTML.textContent = `${marca} ${modelo} ${year} - ${puertas} puertas - color ${color} - Transimisión: ${transmision} - Precio: $${precio}`
         resultado.appendChild(autoHTML)
     })
 }
@@ -66,18 +80,22 @@ function SelectAños() {
         opcion.value = i
         opcion.textContent = i
         year.appendChild(opcion)
-        //console.log(opcion)
+        
+        
     }
 }
 
-//creando objeto de busqueda
-const datosBusqueda = {
-    marca: '',
-    //modelo: '',
-    year: '',
-    minimo: '',
-    maximo: '',
-    puertas: '',
-    transmision: '',
-    color: ''
+function filtrarAutos(){
+//console.log(resultado)
+const resultado = autos.filter(filtrarMarca)
+console.log(resultado)
+mostrarAutos()
 }
+
+function filtrarMarca(auto){
+    const {marca} = datosBusqueda
+    if(marca){
+        return marca===auto.marca
+    }
+    return auto
+ }
