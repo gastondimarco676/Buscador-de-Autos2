@@ -40,8 +40,9 @@ document.addEventListener('DOMContentLoaded', () =>
         console.log(datosBusqueda)
     }),*/
     year.addEventListener('change', e => {
-        datosBusqueda.year = e.target.value
+        datosBusqueda.year = parseInt(e.target.value)
         console.log(datosBusqueda)
+        filtrarAutos()
     }),
     minimo.addEventListener('change', e => {
         datosBusqueda.minimo = e.target.value
@@ -87,7 +88,7 @@ function SelectAños() {
 
 function filtrarAutos(){
 //console.log(resultado)
-const resultado = autos.filter(filtrarMarca)
+const resultado = autos.filter(filtrarMarca).filter(filtrarYear)
 console.log(resultado)
 mostrarAutos()
 }
@@ -98,4 +99,15 @@ function filtrarMarca(auto){
         return marca===auto.marca
     }
     return auto
+ }
+
+ function filtrarYear(auto){
+    const {year} = datosBusqueda
+    //console.log(typeof year)
+    //console.log(typeof auto.year)
+    if(year){
+        return year===auto.year
+    }
+    return auto
+    
  }
