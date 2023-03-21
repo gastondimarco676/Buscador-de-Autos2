@@ -1,6 +1,6 @@
 //VARIABLES
-//contenedor para los resultados
-const resultado = document.querySelector('#resultado')
+//contenedor para los res ultados
+const resultadoHTML = document.querySelector('#resultadoHTML')
 //max y min para el select de años
 const max = new Date().getFullYear()
 const min = max - 10
@@ -28,7 +28,7 @@ const datosBusqueda = {
 
 //Eventos
 document.addEventListener('DOMContentLoaded', () =>
-    mostrarAutos(),
+    mostrarAutos(autos),
     SelectAños(),
     marca.addEventListener('change', e => {
         datosBusqueda.marca = e.target.value
@@ -47,10 +47,12 @@ document.addEventListener('DOMContentLoaded', () =>
     minimo.addEventListener('change', e => {
         datosBusqueda.minimo = e.target.value
         console.log(datosBusqueda)
+        filtrarAutos()
     }),
     maximo.addEventListener('change', e => {
         datosBusqueda.maximo = e.target.value
         console.log(datosBusqueda)
+        filtrarAutos()
     }),
     puertas.addEventListener('change', e => {
         datosBusqueda.puertas = e.target.value
@@ -66,13 +68,13 @@ document.addEventListener('DOMContentLoaded', () =>
     })
 )
 
-function mostrarAutos() {
+function mostrarAutos(autos) {
 
     autos.forEach(auto => {
         const autoHTML = document.createElement('p')
         const { marca, modelo, year, precio, puertas, transmision, color } = auto
         autoHTML.textContent = `${marca} ${modelo} ${year} - ${puertas} puertas - color ${color} - Transimisión: ${transmision} - Precio: $${precio}`
-        resultado.appendChild(autoHTML)
+        resultadoHTML.appendChild(autoHTML)
     })
 }
 function SelectAños() {
@@ -88,9 +90,10 @@ function SelectAños() {
 
 function filtrarAutos(){
 //console.log(resultado)
-const resultado = autos.filter(filtrarMarca).filter(filtrarYear)
+resultadoHTML.innerHTML =''
+const resultado = autos.filter(filtrarMarca).filter(filtrarYear).filter(filtrarMinimo).filter(filtrarMaximo)
 console.log(resultado)
-mostrarAutos()
+mostrarAutos(resultado)
 }
 
 function filtrarMarca(auto){
@@ -110,4 +113,22 @@ function filtrarMarca(auto){
     }
     return auto
     
+ }
+
+ 
+ function filtrarMinimo(auto){
+    const {minimo} = datosBusqueda
+    if(minimo){
+        return auto.precio>=minimo
+    }
+    return auto
+    
+ }
+
+ function filtrarMaximo(auto){
+    const {maximo} = datosBusqueda
+    if(maximo){
+        return auto.precio<=maximo
+    }
+    return auto
  }
