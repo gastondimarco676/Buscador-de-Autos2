@@ -19,8 +19,7 @@ const datosBusqueda = {
     marca: '',
     modelo: '',
     year: '',
-    minimo: '',
-    maximo: '',
+    precio:'',
     puertas: '',
     transmision: '',
     color: ''
@@ -32,51 +31,67 @@ document.addEventListener('DOMContentLoaded', () =>
     SelectAños(),
     marca.addEventListener('change', e => {
         datosBusqueda.marca = e.target.value
-        console.log(datosBusqueda)
+        
         filtrarAutos()
     }),
     /*modelo.addEventListener('change', e => {
         datosBusqueda.modelo = e.target.value
-        console.log(datosBusqueda)
+        
     }),*/
     year.addEventListener('change', e => {
         datosBusqueda.year = parseInt(e.target.value)
-        console.log(datosBusqueda)
+        
         filtrarAutos()
     }),
     minimo.addEventListener('change', e => {
         datosBusqueda.minimo = e.target.value
-        console.log(datosBusqueda)
+        
         filtrarAutos()
     }),
     maximo.addEventListener('change', e => {
         datosBusqueda.maximo = e.target.value
-        console.log(datosBusqueda)
+        
         filtrarAutos()
     }),
     puertas.addEventListener('change', e => {
-        datosBusqueda.puertas = e.target.value
-        console.log(datosBusqueda)
+        datosBusqueda.puertas = parseInt(e.target.value)
+        filtrarAutos()
     }),
     transmision.addEventListener('change', e => {
         datosBusqueda.transmision = e.target.value
-        console.log(datosBusqueda)
+        filtrarAutos()
+
     }),
     color.addEventListener('change', e => {
         datosBusqueda.color = e.target.value
-        console.log(datosBusqueda)
+        filtrarAutos()
+
     })
 )
 
-function mostrarAutos(autos) {
+function filtrarAutos(){
+    //console.log(resultado)
+    const resultado = autos.filter(filtrarMarca).filter(filtrarYear).filter(filtrarMinimo).filter(filtrarMaximo).filter(filtrarPuertas).filter(filtrarTransmision).filter(filtrarColor)
+    resultadoHTML.innerHTML =''
+    console.log(resultado)
+    mostrarAutos(resultado)
+    }
 
-    autos.forEach(auto => {
-        const autoHTML = document.createElement('p')
-        const { marca, modelo, year, precio, puertas, transmision, color } = auto
-        autoHTML.textContent = `${marca} ${modelo} ${year} - ${puertas} puertas - color ${color} - Transimisión: ${transmision} - Precio: $${precio}`
-        resultadoHTML.appendChild(autoHTML)
-    })
+function mostrarAutos(resultado) {
+    //const resultado = autos.filter(filtrarMarca).filter(filtrarYear).filter(filtrarMinimo).filter(filtrarMaximo).filter(filtrarPuertas).filter(filtrarTransmision).filter(filtrarColor)
+
+    if(resultado.length===0){
+        noResultado()
+    }else{
+        resultado.forEach(auto => {
+            const autoHTML = document.createElement('p')
+            const { marca, modelo, year, precio, puertas, transmision, color } = auto
+            autoHTML.textContent = `${marca} ${modelo} ${year} - ${puertas} puertas - color ${color} - Transimisión: ${transmision} - Precio: $${precio}`
+            resultadoHTML.appendChild(autoHTML)
+        })
+    }  
 }
+
 function SelectAños() {
     for (let i = max; i >= min; i--) {
         const opcion = document.createElement('option')
@@ -88,13 +103,9 @@ function SelectAños() {
     }
 }
 
-function filtrarAutos(){
-//console.log(resultado)
-resultadoHTML.innerHTML =''
-const resultado = autos.filter(filtrarMarca).filter(filtrarYear).filter(filtrarMinimo).filter(filtrarMaximo)
-console.log(resultado)
-mostrarAutos(resultado)
-}
+
+
+//filtros por item
 
 function filtrarMarca(auto){
     const {marca} = datosBusqueda
@@ -131,4 +142,34 @@ function filtrarMarca(auto){
         return auto.precio<=maximo
     }
     return auto
+ }
+
+ function filtrarPuertas(auto){
+    const {puertas} = datosBusqueda
+    console.log(typeof puertas)
+    if(puertas){
+        return auto.puertas===puertas
+    }
+    return auto
+ }
+ function filtrarTransmision(auto){
+    const {transmision} = datosBusqueda
+    if(transmision){
+        return auto.transmision===transmision
+    }
+    return auto
+ }
+ function filtrarColor(auto){
+    const {color} = datosBusqueda
+    console.log(typeof color)
+    if(color){
+        return auto.color===color
+    }
+    return auto
+ }
+
+ function noResultado(){
+    const mensajeError = document.createElement('p')
+        mensajeError.textContent= 'Qué macana! No tenemos un auto con esas características che'
+        resultadoHTML.appendChild(mensajeError)
  }
